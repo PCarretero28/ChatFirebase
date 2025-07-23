@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "265685703583",
+    "project_id": "chatfirebase-3aadb",
+    "storage_bucket": "chatfirebase-3aadb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265685703583:android:563c5abff38b999a8cfbaa",
+        "android_client_info": {
+          "package_name": "pcg.curso.chatfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQsJvcg5HMAWKkqtCcrIOyJcMevgKaCMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
