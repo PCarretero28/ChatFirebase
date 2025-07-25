@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "pcg.curso.chatfirebase"
-    compileSdk = 33
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "pcg.curso.chatfirebase"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
