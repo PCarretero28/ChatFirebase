@@ -5,13 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import pcg.curso.chatfirebase.R
 import pcg.curso.chatfirebase.databinding.FragmentChatBinding
 
+@AndroidEntryPoint
 class ChatFragment : Fragment() {
 
     private lateinit var binding: FragmentChatBinding
+    private val viewmodel by viewModels<ChatViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,6 +25,11 @@ class ChatFragment : Fragment() {
         binding.ivBack.setOnClickListener{
             findNavController().navigate(R.id.action_back_to_main_fragment)
         }
+
+        binding.btnSendMsg.setOnClickListener{
+            viewmodel.sendMessage()
+        }
+
         return binding.root
     }
 }

@@ -52,15 +52,15 @@ dependencies {
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:31.4.0"))
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-database-ktx")
 
     //Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
     //Hilt
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-compiler:2.44")
-
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
