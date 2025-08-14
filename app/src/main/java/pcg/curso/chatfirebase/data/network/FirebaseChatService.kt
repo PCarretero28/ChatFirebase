@@ -1,6 +1,7 @@
 package pcg.curso.chatfirebase.data.network
 
 import com.google.firebase.database.DatabaseReference
+import pcg.curso.chatfirebase.data.network.dto.MessageDto
 import javax.inject.Inject
 
 class FirebaseChatService @Inject constructor(private val reference: DatabaseReference) {
@@ -9,9 +10,10 @@ class FirebaseChatService @Inject constructor(private val reference: DatabaseRef
         private const val PATH = "messages"
     }
 
-    fun sendMsgToFirebase(msg: String) {
+    fun sendMsgToFirebase(messageDto: MessageDto) {
         val newMsg = reference.child(PATH).push()
-        newMsg.setValue(msg)
+        newMsg.setValue(messageDto)
+
     }
 
 }
