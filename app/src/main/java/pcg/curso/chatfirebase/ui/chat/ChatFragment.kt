@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import pcg.curso.chatfirebase.R
 import pcg.curso.chatfirebase.databinding.FragmentChatBinding
+import pcg.curso.chatfirebase.domain.model.MessageModel
+import pcg.curso.chatfirebase.ui.chat.adapter.ChatAdapter
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -17,19 +22,44 @@ class ChatFragment : Fragment() {
     private lateinit var binding: FragmentChatBinding
     private val viewmodel by viewModels<ChatViewModel>()
 
+    private lateinit var chatAdapter: ChatAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
-        binding.ivBack.setOnClickListener{
+        binding.ivBack.setOnClickListener {
             findNavController().navigate(R.id.action_back_to_main_fragment)
         }
 
-        binding.btnSendMsg.setOnClickListener{
-            viewmodel.sendMessage()
-        }
+        setUpUI()
+
+        binding.btnSendMsg.setOnClickListener { viewmodel.sendMessage() }
 
         return binding.root
+    }
+
+    private fun setUpUI() {
+
+        setUpMessages()
+        subscribeToMessages()
+    }
+
+    private fun setUpMessages() {
+        chatAdapter = ChatAdapter(mutableListOf(), "Pablo")
+        binding.rvMsg.apply {
+            adapter = chatAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun subscribeToMessages(){
+        lifecycleScope.launch {
+            viewmodel.messageList.collect{
+                chatAdapter.updateList(it.toMutableList())
+                binding.rvMsg.scrollToPosition(it.size - 1)
+            }
+        }
     }
 }
