@@ -47,7 +47,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun setUpMessages() {
-        chatAdapter = ChatAdapter(mutableListOf(), "Pablo")
+        chatAdapter = ChatAdapter(mutableListOf())
         binding.rvMsg.apply {
             adapter = chatAdapter
             layoutManager = LinearLayoutManager(context)
@@ -57,7 +57,7 @@ class ChatFragment : Fragment() {
     private fun subscribeToMessages(){
         lifecycleScope.launch {
             viewmodel.messageList.collect{
-                chatAdapter.updateList(it.toMutableList())
+                chatAdapter.updateList(it.toMutableList(), viewmodel.name)
                 binding.rvMsg.scrollToPosition(it.size - 1)
             }
         }

@@ -9,7 +9,7 @@ import pcg.curso.chatfirebase.domain.model.MessageModel
 
 class ChatAdapter(
     private var messageList: MutableList<MessageModel>,
-    private val userName: String
+    private var userName: String = ""
 ) : RecyclerView.Adapter<ChatViewHolder>() {
 
     companion object {
@@ -48,7 +48,8 @@ class ChatAdapter(
         }
     }
 
-    fun updateList(list: MutableList<MessageModel>) {
+    fun updateList(list: MutableList<MessageModel>, name: String) {
+        userName = name
         messageList.clear()
         messageList.addAll(list)
         notifyItemInserted(messageList.size - 1)
