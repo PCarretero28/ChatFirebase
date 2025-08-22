@@ -46,9 +46,8 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun sendMessage() {
-        val msg = "Hola hola"
-        sendMessageUseCase(msg)
+    fun sendMessage(msg: String) {
+        sendMessageUseCase(msg, name)
     }
 
 }

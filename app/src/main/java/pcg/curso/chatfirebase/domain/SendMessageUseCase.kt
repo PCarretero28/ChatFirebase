@@ -8,11 +8,10 @@ import javax.inject.Inject
 
 class SendMessageUseCase @Inject constructor(private val firebaseChatService: FirebaseChatService) {
 
-    operator fun invoke(msg: String) {
+    operator fun invoke(msg: String, nickname: String) {
 
         val calendar = Calendar.getInstance()
 
-        val currentMsg = msg
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val min = calendar.get(Calendar.MINUTE)
 
@@ -21,12 +20,12 @@ class SendMessageUseCase @Inject constructor(private val firebaseChatService: Fi
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val userDto = UserDto(
-            userName = "Prueba",
+            userName = nickname,
             admin = false
         )
 
         val messageDto = MessageDto(
-            msg = currentMsg,
+            msg = msg,
             hour = "$hour:$min",
             date = "$day/$month/$year",
             user = userDto

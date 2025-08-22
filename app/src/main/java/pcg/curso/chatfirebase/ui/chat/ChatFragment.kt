@@ -35,7 +35,13 @@ class ChatFragment : Fragment() {
 
         setUpUI()
 
-        binding.btnSendMsg.setOnClickListener { viewmodel.sendMessage() }
+        binding.btnSendMsg.setOnClickListener {
+            val msg = binding.etChat.text.toString()
+            if(msg.isNotEmpty()){
+                viewmodel.sendMessage(msg)
+            }
+            binding.etChat.text.clear()
+        }
 
         return binding.root
     }
@@ -54,9 +60,9 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun subscribeToMessages(){
+    private fun subscribeToMessages() {
         lifecycleScope.launch {
-            viewmodel.messageList.collect{
+            viewmodel.messageList.collect {
                 chatAdapter.updateList(it.toMutableList(), viewmodel.name)
                 binding.rvMsg.scrollToPosition(it.size - 1)
             }
