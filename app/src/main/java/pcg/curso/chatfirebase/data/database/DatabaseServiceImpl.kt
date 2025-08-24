@@ -27,6 +27,12 @@ class DatabaseServiceImpl @Inject constructor(private val context: Context) : Da
         }
     }
 
+    override suspend fun clear() {
+        context.userPreferenceDataStore.edit { preferences ->
+            preferences[USER_NAME] = ""
+        }
+    }
+
     override fun getUserName(): Flow<String> =
         context.userPreferenceDataStore.data.map { preferences -> preferences[USER_NAME] ?: ""
     }

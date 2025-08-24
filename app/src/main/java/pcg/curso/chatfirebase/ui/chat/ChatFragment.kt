@@ -30,14 +30,14 @@ class ChatFragment : Fragment() {
     ): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         binding.ivBack.setOnClickListener {
-            findNavController().navigate(R.id.action_back_to_main_fragment)
+            viewmodel.logout { findNavController().navigate(R.id.action_back_to_main_fragment) }
         }
 
         setUpUI()
 
         binding.btnSendMsg.setOnClickListener {
             val msg = binding.etChat.text.toString()
-            if(msg.isNotEmpty()){
+            if (msg.isNotEmpty()) {
                 viewmodel.sendMessage(msg)
             }
             binding.etChat.text.clear()
@@ -47,9 +47,13 @@ class ChatFragment : Fragment() {
     }
 
     private fun setUpUI() {
-
         setUpMessages()
         subscribeToMessages()
+        sepUpToolbar()
+    }
+
+    private fun sepUpToolbar() {
+        binding.tvTitle.text = viewmodel.name
     }
 
     private fun setUpMessages() {
@@ -63,6 +67,7 @@ class ChatFragment : Fragment() {
     private fun subscribeToMessages() {
         lifecycleScope.launch {
             viewmodel.messageList.collect {
+                sepUpToolbar()
                 chatAdapter.updateList(it.toMutableList(), viewmodel.name)
                 binding.rvMsg.scrollToPosition(it.size - 1)
             }

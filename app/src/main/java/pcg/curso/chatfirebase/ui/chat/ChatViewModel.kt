@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pcg.curso.chatfirebase.domain.GetMessagesUseCase
 import pcg.curso.chatfirebase.domain.GetUserNameUseCase
+import pcg.curso.chatfirebase.domain.LogoutUseCase
 import pcg.curso.chatfirebase.domain.SendMessageUseCase
 import pcg.curso.chatfirebase.domain.model.MessageModel
 import javax.inject.Inject
@@ -18,10 +20,11 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     private val sendMessageUseCase: SendMessageUseCase,
     private val getMessagesUseCase: GetMessagesUseCase,
-    private val getUserNameUseCase: GetUserNameUseCase
+    private val getUserNameUseCase: GetUserNameUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
-    var name:String = ""
+    var name: String = ""
 
     init {
         getUserName()
@@ -35,12 +38,12 @@ class ChatViewModel @Inject constructor(
     }
 
     private var _messageList = MutableStateFlow<List<MessageModel>>(emptyList())
-    val messageList:StateFlow<List<MessageModel>> = _messageList
+    val messageList: StateFlow<List<MessageModel>> = _messageList
 
     private fun getMessages() {
         viewModelScope.launch {
             getMessagesUseCase().collect {
-                Log.d("Pablo prueba", "La info es $it")
+                Log.d("testing info", "La info es $it")
                 _messageList.value = it
             }
         }
@@ -48,6 +51,13 @@ class ChatViewModel @Inject constructor(
 
     fun sendMessage(msg: String) {
         sendMessageUseCase(msg, name)
+    }
+
+    fun logout(onViewFinish:() -> Unit) {
+        viewModelScope.launch {
+            async { logoutUseCase() }.await()
+            onViewFinish()
+        }
     }
 
 }
